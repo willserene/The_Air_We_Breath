@@ -1,55 +1,39 @@
-//Quake URL
-var weekURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_week.geojson"
-var plateURL = 'https://raw.githubusercontent.com/fraxen/tectonicplates/master/GeoJSON/PB2002_boundaries.json'
+//json location
+var csv = "./Resources/data/air_api_data.csv"
 
 //Get request for weekURL
-d3.json(weekURL, function(response){
+d3.csv(csv, function(response){
   console.log(response)
-  console.log(response.features[0].geometry.coordinates[2])
-  //Get request for plateURL
-  d3.json(plateURL, function(plateShapes){
-    console.log(plateShapes)
-    //createFeatures(response.features);
+  console.log(response[0].lat)
   
-    //Function to grab data from each feature for pop up and map
-    //function createFeatures(data) {
-    function onEachFeature(feature, layer) {
-      layer.bindPopup("<h3>" + feature.properties.place + "</h3><hr><p><strong>Magnitude: </strong>" + 
-        feature.properties.mag + "<br><strong>Depth: </strong>" +
-        feature.geometry.coordinates[2] + " m <br> <strong>Time: </strong>" + 
-        new Date(feature.properties.time) + "</p>")
-    }
-
     //Function to define colors
     function getColor(d) {
-      return d > 90 ? 'Red':
-        d >= 70 ? 'OrangeRed':
-        d >= 50 ? 'Orange':
-        d >= 30 ? 'Yellow':
-        d >= 10 ? 'LawnGreen':
-        "Green"
-    }  
+      return d == 1 ? 'Green':
+        d == 2 ? 'YellowGreen':
+        d == 3 ? 'Yellow':
+        d == 4 ? 'Orange':
+        d == 5 ? 'Red':
+        "Gray"
+    };  
 
-    //Function to create circle markers with size and color
-    function pointToLayer(feature, latlng) {
-      var geojsonMarkerOptions = {
-        fillColor: getColor(feature.geometry.coordinates[2]),
-        radius: feature.properties.mag * 3,
-        fillOpacity: 0.8,
-        color: "white",
-        weight: 2
-      }
-      return L.circleMarker(latlng, geojsonMarkerOptions);
+    console.log(getColor(response[0].AQI))
+
+    var cityMarkers = [];
+
+    for (var i = 0; i < response.length; i++) {
+        let latLng = L.latLng(response[i].lat, response[i].lon)
+        cityMarkers.push(
+        L.circleMarker(latLng, {
+        fillColor: getColor(response[i].AQI),
+        fillOpacity: 0.7,
+        color: "gray",
+        weight: 1,
+        radius: 10
+        }).bindPopup("<h2>" + response[i].City + "</h2> <hr> <h3>AQI: " + response[i].AQI + "</h3>")
+        );
     };
 
-    //Add popups and markers based on quake lat/longs
-    var quakes = L.geoJSON(response.features, {
-      onEachFeature: onEachFeature,
-      pointToLayer: pointToLayer
-    });
-
-    //Add tectonic plate lines
-    var tectPlates = L.geoJSON(plateShapes.features);
+    var cityLayer = L.layerGroup(cityMarkers);
 
     // Add darkmap tile layer
     var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -90,16 +74,16 @@ d3.json(weekURL, function(response){
 
     //Create overlayMaps for layer control
     var overlayMaps = {
-      "Earthquakes": quakes,
-      "Plates": tectPlates
+      "Cities": cityLayer
     };
   
     //Create inital map object with default layers
     var myMap = L.map("map", {
       center: [39.0, -105.7821],
       zoom: 8,
-      layers: [outdoormap, quakes, tectPlates]
+      layers: [outdoormap, cityLayer]
     });
+
 
     //Add layer control
     L.control.layers(baseMaps, overlayMaps, {
@@ -110,21 +94,22 @@ d3.json(weekURL, function(response){
     var legend = L.control({ position: "bottomright"});
       legend.onAdd = function() {
         var div = L.DomUtil.create("div", "info legend");
-        var grades = [-10, 10, 30, 50, 70, 90];
-        var labels = [];
+        var grades = [1, 2, 3, 4, 5];
+        var labels = ['<strong>AQI</strong>'];
 
-        div.innerHTML += '<strong>Depth</strong><br>'
+        // div.innerHTML += '<strong>AQI</strong><br>'
 
         for (var i= 0; i < grades.length; i++) {
           div.innerHTML +=
-            '<i style="background:' + getColor(grades[i] + 1) + '"></i> ' +
-            grades[i] + (grades[i + 1] ? '&ndash;' + grades[i + 1] + '<br>' : '+');
+            labels.push(
+                '<i style="background:' + getColor(grades[i]) + '"></i> ' +
+            (grades[i] ? grades[i] : '+'));
         }
+        div.innerHTML = labels.join('<br>');
         return div;
         }; 
     legend.addTo(myMap);
     myMap.invalidateSize();
-  });
 });
 
 
