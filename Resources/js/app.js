@@ -40,10 +40,26 @@ d3.csv(csv, function(response){
         var clickedLat = e.layer._latlng["lat"];
         var clickedLon = e.layer._latlng["lng"];
         var clickedCity = e.layer.options.id
+        console.log(clickedCity);
         console.log(clickedLat);
         console.log(clickedLon);
-        console.log(clickedCity);
+        
     })
+
+    // Heatmap
+    var heatMap = [];
+
+    for (var i=0; i < response.length; i++) {
+        let intensity = L.latLng(response[i].lat, response[i].lon, response[i].AQI/5)
+        heatMap.push(intensity);
+    };
+
+    var heat = L.heatLayer(heatMap, {
+        radius: 30,
+        blur: 10, 
+        minOpacity: 0.2,
+        maxZoom: 18
+      });
 
     // Add darkmap tile layer
     var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
@@ -84,7 +100,8 @@ d3.csv(csv, function(response){
 
     //Create overlayMaps for layer control
     var overlayMaps = {
-      "Cities": cityLayer
+      "Cities": cityLayer,
+      "Heat": heat
     };
   
     //Create inital map object with default layers
