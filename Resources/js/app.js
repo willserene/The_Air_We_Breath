@@ -30,7 +30,7 @@ d3.csv(csv, function(response){
         weight: 1,
         radius: 10, 
         id: response[i].City
-        }).bindPopup("<h2>" + response[i].City + "</h2> <hr> <h3>AQI: " + response[i].AQI + "</h3>")
+        }).bindPopup("<h6>" + response[i].City + "</h6> <hr> <p>AQI: " + response[i].AQI + "</p>")
         );
     };
 
@@ -104,10 +104,15 @@ d3.csv(csv, function(response){
       "Heat": heat
     };
   
+    //Create bounds
+    bounds = new L.LatLngBounds(new L.LatLng(42, -109.8), new L.LatLng(36.8, -101))
+
     //Create inital map object with default layers
-    var myMap = L.map("Map", {
-      center: [39.0, -105.7821],
-      zoom: 8,
+    var myMap = L.map("map", {
+      center: [39.0, -105.3],
+      //center: bounds.getCenter(),
+      zoom: 7,
+      maxBounds: bounds,
       layers: [outdoormap, cityLayer]
     });
 
@@ -136,7 +141,8 @@ d3.csv(csv, function(response){
         return div;
         }; 
     legend.addTo(myMap);
-    myMap.invalidateSize();
+
+    //setTimeout(function(){ map.invalidateSize()}, 400);
 });
 
 
