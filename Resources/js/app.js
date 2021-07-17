@@ -5,7 +5,7 @@ var csv = "./Resources/data/air_api_data.csv"
 d3.csv(csv, function(response){
   console.log(response)
   console.log(response[0].lat)
-  
+
     //Function to define colors
     function getColor(d) {
       return d == 1 ? 'Green':
@@ -28,12 +28,22 @@ d3.csv(csv, function(response){
         fillOpacity: 0.7,
         color: "gray",
         weight: 1,
-        radius: 10
+        radius: 10, 
+        id: response[i].City
         }).bindPopup("<h2>" + response[i].City + "</h2> <hr> <h3>AQI: " + response[i].AQI + "</h3>")
         );
     };
 
-    var cityLayer = L.layerGroup(cityMarkers);
+    var cityLayer = L.featureGroup(cityMarkers);
+
+    cityLayer.on("click", function(e) {
+        var clickedLat = e.layer._latlng["lat"];
+        var clickedLon = e.layer._latlng["lng"];
+        var clickedCity = e.layer.options.id
+        console.log(clickedLat);
+        console.log(clickedLon);
+        console.log(clickedCity);
+    })
 
     // Add darkmap tile layer
     var darkmap = L.tileLayer("https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}", {
