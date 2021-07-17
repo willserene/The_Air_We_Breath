@@ -105,7 +105,7 @@ d3.csv(csv, function(response){
     };
   
     //Create inital map object with default layers
-    var myMap = L.map("map", {
+    var myMap = L.map("Map", {
       center: [39.0, -105.7821],
       zoom: 8,
       layers: [outdoormap, cityLayer]
