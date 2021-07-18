@@ -30,7 +30,7 @@ d3.csv(csv, function(response){
         weight: 1,
         radius: 10, 
         id: response[i].City
-        }).bindPopup("<h6>" + response[i].City + "</h6> <hr> <p>AQI: " + response[i].AQI + "</p>")
+        }).bindPopup("<h6>" + response[i].City + "</h6> <hr> <p>AQI: " + response[i].AQI + "<br>Population: " + response[i].Population + "</p>")
         );
     };
 
@@ -141,8 +141,121 @@ d3.csv(csv, function(response){
         return div;
         }; 
     legend.addTo(myMap);
+  
+  //Set-up bubble plot 
+  var population = [];
+  var AQI = [];
 
-    //setTimeout(function(){ map.invalidateSize()}, 400);
+    for (var i=0; i < response.length; i++) {
+        let pop = response[i].Population
+        let airQual = response[i].AQI
+        population.push(pop);
+        AQI.push(airQual);
+    };
+
+  var traceBubble = [{
+    type: 'scatter',
+    mode: 'markers',
+    marker: {
+        opacity: 0.75,
+        color: 'red',
+        size: 20,
+        line: {
+            color: 'black',
+            width: 2,
+        },
+    },
+    x: AQI,
+    y: population,
+    text: []
+}];
+var layoutBubble = {
+    title: `Air Quality vs. Population`,
+    xaxis: {title: 'Air Quality'},
+    yaxis: {title: 'Population'}
+};
+
+var trace1 = {
+  labels: AQI,
+  values: AQI/AQI,
+  type: 'pie'
+};
+
+var data = [trace1];
+
+var layout = {
+  title: "AQI Distribution",
+};
+
+Plotly.newPlot("pie", data, layout)
+
+//Use plotly to display charts
+Plotly.newPlot("bubble", traceBubble, layoutBubble);
+console.log(AQI)
+//Chart.js
+const ctx = document.getElementById('myChart')
+var one = 0
+var two = 0
+var three = 0
+var four = 0
+var five = 0
+
+function aqiSort(AQI) {
+  for (var i = 0; i < AQI.length; i++) {
+    var score = AQI[i]
+    switch(score){
+      case "1":
+        one += 1;
+        break;
+      case "2":
+        two += 1;
+        break;
+      case "3":
+        three += 1;
+        break;
+      case "4":
+        four += 1;
+        break;
+      case "5":
+        five += 1;
+        break;
+      default:
+        console.log("this didnt' work")
+    }
+  }
+}
+aqiSort(AQI)
+
+doData = []
+doData.push(one)
+doData.push(two)
+doData.push(three)
+doData.push(four)
+doData.push(five)
+console.log(doData)
+//.getContext('2d');
+console.log(ctx);
+let doChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ["1", "2", "3", "4", "5"],
+      datasets: [{
+        label: 'Air Quality',
+        data: doData,
+        backgroundColor: [
+          'Green',
+          'YellowGreen',
+          'Yellow', 
+          'Orange',
+          'Red'
+        ],
+        hoverOffset: 4
+      }]
+    },
+    options: {
+      responsive: false
+    }
+  });  
 });
 
 
