@@ -3,8 +3,12 @@ var csv = "./Resources/data/air_api_data.csv"
 
 //Get request for weekURL
 d3.csv(csv, function(response){
+  response.forEach(function(data){
+    data.Population = +data.Population.replace(/,/g, '')
+  })
+
   console.log(response)
-  console.log(response[0].lat)
+  console.log(response[0].Population)
 
     //Function to define colors
     function getColor(d) {
@@ -153,46 +157,127 @@ d3.csv(csv, function(response){
         AQI.push(airQual);
     };
 
-  var traceBubble = [{
-    type: 'scatter',
-    mode: 'markers',
-    marker: {
-        opacity: 0.75,
-        color: 'red',
-        size: 20,
-        line: {
-            color: 'black',
-            width: 2,
-        },
-    },
-    x: AQI,
-    y: population,
-    text: []
-}];
+//   var traceBubble = [{
+//     type: 'scatter',
+//     mode: 'markers',
+//     marker: {
+//         opacity: 0.75,
+//         color: 'red',
+//         size: 20,
+//         line: {
+//             color: 'black',
+//             width: 2,
+//         },
+//     },
+//     x: AQI,
+//     y: population,
+//     text: []
+// }];
 var layoutBubble = {
     title: `Air Quality vs. Population`,
     xaxis: {title: 'Air Quality'},
     yaxis: {title: 'Population'}
 };
 
-var trace1 = {
-  labels: AQI,
-  values: AQI/AQI,
-  type: 'pie'
-};
-
-var data = [trace1];
-
-var layout = {
-  title: "AQI Distribution",
-};
-
-Plotly.newPlot("pie", data, layout)
-
-//Use plotly to display charts
-Plotly.newPlot("bubble", traceBubble, layoutBubble);
+// //Use plotly to display charts
+// Plotly.newPlot("bubble", traceBubble, layoutBubble);
 console.log(AQI)
-//Chart.js
+
+//Bar Chart.js
+const bar = document.getElementById('barChart')
+var onePop = 0
+var twoPop = 0
+var threePop = 0
+var fourPop = 0
+var fivePop = 0
+
+function aqiPop(response) {
+  for (var i = 0; i < response.length; i++) {
+    var score = response[i].AQI
+    var cityPop = response[i].Population
+    if (isNaN(cityPop) == false) {
+      switch(score){
+        case "1":
+          onePop += cityPop;
+          break;
+        case "2":
+          twoPop += cityPop;
+          break;
+        case "3":
+          threePop += cityPop;
+          break;
+        case "4":
+          fourPop += cityPop;
+          break;
+        case "5":
+          fivePop += cityPop;
+          break;
+        default:
+          console.log("this didnt' work")
+      }
+    }  
+  }
+}
+
+aqiPop(response)
+
+popData = []
+popData.push(onePop)
+popData.push(twoPop)
+popData.push(threePop)
+popData.push(fourPop)
+popData.push(fivePop)
+console.log(popData)
+labels = [ "1: Very Low", "2: Low", "3: Medium", "4: High", "5: Very High"]
+let barChart = new Chart(bar, {
+  type: 'bar',
+  data: {
+    labels: labels,
+    datasets: [{
+      label: '',
+      data: popData,
+      backgroundColor: [
+        'Green',
+        'YellowGreen',
+        'Yellow', 
+        'Orange',
+        'Red'
+      ],
+      borderColor: [
+        'Green',
+        'YellowGreen',
+        'Yellow', 
+        'Orange',
+        'Red'
+      ],
+      borderWidth: 1
+    }]
+  },
+  options: {
+    //indexAxis: 'y',
+    plugins: {
+      legend: {
+        display: false,
+        position: "right"
+      },
+      title: {
+        display: true,
+        text: "Colorado Population by Air Quality Index",
+        font: {
+          size: 28,
+        }
+      }
+    },
+    scales: {
+      y: {
+        beginAtZero: true
+      }
+    },
+    responsive: true
+  }
+});
+
+//Doughnut Chart.js
 const ctx = document.getElementById('myChart')
 var one = 0
 var two = 0
@@ -224,6 +309,7 @@ function aqiSort(AQI) {
     }
   }
 }
+
 aqiSort(AQI)
 
 doData = []
@@ -235,10 +321,11 @@ doData.push(five)
 console.log(doData)
 //.getContext('2d');
 console.log(ctx);
+
 let doChart = new Chart(ctx, {
     type: 'doughnut',
     data: {
-      labels: ["1", "2", "3", "4", "5"],
+      labels: labels,
       datasets: [{
         label: 'Air Quality',
         data: doData,
@@ -253,6 +340,20 @@ let doChart = new Chart(ctx, {
       }]
     },
     options: {
+      plugins: {
+        legend: {
+          display: true,
+          position: "right"
+        },
+        title: {
+          display: true,
+          text: "City Air Quality Index",
+          font: {
+            size: 28,
+          }
+        }
+      },
+      maintainAspectRatio : false,
       responsive: false
     }
   });  
