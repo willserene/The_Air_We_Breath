@@ -68,7 +68,7 @@ function buildPlot(){
           'AQI: ': filteredMeta[0].aqi,
           'Population 2019 Estimate: ': filteredMeta[0].Population,
           'Area Land mi2: ': filteredMeta[0].Area,
-          'Location: ': filteredMeta[0].location
+          'Location: ': filteredMeta[0].Location
       }
       //select the id to append the key value pair under demographics panel
       panelBody = d3.select("#sample-metadata")
@@ -81,29 +81,6 @@ function buildPlot(){
           panelBody.append('p').attr('style', 'font-weight: bold').text(key + value)
       });
 
-      // Create the trace for the bubble chart
-      var trace2 ={
-          x : filteredID[0].air_ids,
-          y : filteredID[0].sample_values,
-          text : filteredID[0].air_labels,
-          mode : 'markers',
-          marker: {
-              color : filteredID[0].air_ids,
-              size : filteredID[0].sample_values
-          }
-      }
-
-      var data2 = [trace2]
-
-      //create the layout for the bubble chart
-    //   var layout2 = {
-    //       title : 'Marker Size',
-    //       showlegend : false, 
-    //   }
-
-    //   //plot plot plot with plotly
-    //   Plotly.newPlot('bubble', data2, layout2)
-    //   console.log(filteredID)
       gauge()
   });
 };
@@ -163,14 +140,10 @@ function createGauge() {
             'steelblue',
             'slategrey',
             'burlywood'
-            // 'rgb(129, 162, 74)',
-            // 'rgb(101, 150, 51)',
-            // 'grey41',
-            // 'grey40'
+            
         ]
     },
-    // "domain": {x: [0], y: [0]
-    // },
+   
     "name": "Gauge",
     "hole": .4,
     "type": "pie",
@@ -188,7 +161,6 @@ function createGauge() {
     width: 600,
     shapes:[{
         type: 'path',
-        // path: 'M .48 .5 L 0.5 .85 L .52 .5 Z',
         path: path,
         fillcolor: '850000',
         line: {
