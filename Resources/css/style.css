@@ -38,8 +38,8 @@ html {
   margin-right: 8px;
 }
 
-#myChart {
-  background-color:lightgrey;
+#doChart {
+  background-color:whitesmoke;
   padding: 10px;
   border-radius: 10px;
   width: 100%;
@@ -48,8 +48,18 @@ html {
 }
 
 #barChart {
-  background-color:lightgrey;
+  background-color:whitesmoke;
   padding: 10px;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#radarChart {
+  padding: 10px;
+  border: 10px;
+  border-color:black;
   border-radius: 10px;
   width: 100%;
   margin-top: 10px;

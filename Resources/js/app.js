@@ -42,17 +42,6 @@ d3.csv(csv, function(response){
   //Create layer with markers
   var cityLayer = L.featureGroup(cityMarkers);
 
-  //Event handler to return city when circle marker is clicked
-  cityLayer.on("click", function(e) {
-      var clickedLat = e.layer._latlng["lat"];
-      var clickedLon = e.layer._latlng["lng"];
-      var clickedCity = e.layer.options.id
-      console.log(clickedCity);
-      console.log(clickedLat);
-      console.log(clickedLon);
-      
-  })
-
   //Create empty array for lat/longs & AQI for heatmap
   var heatMap = [];
 
@@ -354,25 +343,48 @@ d3.csv(csv, function(response){
       }
   });
 
-  //Create radar chart via Chart.js
+  test = response.filter(row => row.City == "Denver")
+  testD = test[0]
+  console.log(testD)
+  console.log(testD.SO2)
+
+  //Create initial radar chart via Chart.js
   const radar = document.getElementById('radarChart')
-  let radLabels = ["CO", "NH3", "NO", "NO2", "O3", "PM2.5", "PM10", "S02"]
-  let radChart = new Chart(radar, {
+  let radLabels = ["CO", "NO2", "O3", "S02", "PM2.5", "PM10"]
+  let matchedCity = response.filter(row => row.City == 'Denver');
+  let match = matchedCity[0];
+  let matchCO = Math.round(((match.CO/1000)/15.4)*100)
+  //let matchNH3 = match.NH3
+  //let matchNO = match.NO
+  let matchNO2 = Math.round((match.NO2/649)*100)
+  let matchO3 = Math.round((match.O3/204)*100)
+  let matchSO2 = Math.round((match.SO2/304)*100)
+  let matchPM25 = Math.round((match.PM25/150.4)*100)
+  let matchPM10 = Math.round((match.PM10/354)*100)
+  let matchData = []
+  matchData.push(matchCO, matchNO2, matchO3, matchSO2, matchPM25, matchPM10)
+  radChart = new Chart(radar, {
       type: 'radar',
       data: {
         labels: radLabels,
         datasets: [{
-          label: 'Polution Component',
-          data: popData,
-          backgroundColor: 'rgba(54, 162, 235, 0.2)',
-          borderColor: 'rgb(54, 162, 235)',
-          pointBackgroundColor: 'rgb(54, 162, 235)',
+          label: 'Denver',
+          data: matchData,
+          backgroundColor: 'rgba(255, 99, 132, 0.2)',
+          borderColor: 'rgb(255, 99, 132)',
+          pointBackgroundColor: 'rgb(255, 99, 132)',
           pointBorderColor: '#fff',
           pointHoverBackgroundColor: '#fff',
-          pointHoverBorderColor: 'rgb(54, 162, 235)'
+          pointHoverBorderColor: 'rgb(255, 99, 132)'
         }]
       },
       options: {
+        scales: {
+          r: {
+            suggestedMin: 0,
+            suggestedMax: 100
+          }
+        },
         elements: {
           line: {
             borderWidth: 5
@@ -385,16 +397,115 @@ d3.csv(csv, function(response){
           },
           title: {
             display: true,
-            text: "Radddddar",
+            text: `Denver Pollution Component %`,
             font: {
               size: 28,
+            }
+          },
+          subtitle: {
+            display: true,
+            text: "100% = Threshold for Medium AQI",
+            font: {
+              size: 16,
+            },
+            padding: {
+              top:0,
+              bottom:30
             }
           }
         },
         maintainAspectRatio : true,
         responsive: true
       }
-  });  
+  });
+
+
+  function radarChart(selectedCity) {
+    const radar = document.getElementById('radarChart')
+    let radLabels = ["CO", "NO2", "O3", "S02", "PM2.5", "PM10"]
+    let matchedCity = response.filter(row => row.City == 'Denver');
+    let match = matchedCity[0];
+    let matchCO = Math.round(((match.CO/1000)/15.4)*100)
+    //let matchNH3 = match.NH3
+    //let matchNO = match.NO
+    let matchNO2 = Math.round((match.NO2/649)*100)
+    let matchO3 = Math.round((match.O3/204)*100)
+    let matchSO2 = Math.round((match.SO2/304)*100)
+    let matchPM25 = Math.round((match.PM25/150.4)*100)
+    let matchPM10 = Math.round((match.PM10/354)*100)
+    let matchData = []
+    matchData.push(matchCO, matchNO2, matchO3, matchSO2, matchPM25, matchPM10)
+    radChart = new Chart(radar, {
+        type: 'radar',
+        data: {
+          labels: radLabels,
+          datasets: [{
+            label: `${selectedCity}`,
+            data: matchData,
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgb(54, 162, 235)',
+            pointBackgroundColor: 'rgb(54, 162, 235)',
+            pointBorderColor: '#fff',
+            pointHoverBackgroundColor: '#fff',
+            pointHoverBorderColor: 'rgb(54, 162, 235)'
+          }]
+        },
+        options: {
+          scales: {
+            r: {
+              suggestedMin: 0,
+              suggestedMax: 100
+            }
+          },
+          elements: {
+            line: {
+              borderWidth: 5
+            }
+          },
+          plugins: {
+            legend: {
+              display: false,
+              position: "right"
+            },
+            title: {
+              display: true,
+              text: `${selectedCity} Pollution Component %`,
+              font: {
+                size: 28,
+              }
+            }
+          },
+          maintainAspectRatio : true,
+          responsive: true
+        }
+    });
+  }
+
+  //Function to removed data
+  function removeData(chart) {
+    chart.data.labels.pop()
+    chart.data.datasets.forEach((dataset) => {
+      dataset.data.pop();
+    });
+    chart.update();
+  }
+  //Event handler to return city when circle marker is clicked
+  function getData(){
+    cityLayer.on("click", function(e) {
+        var clickedLat = e.layer._latlng["lat"];
+        var clickedLon = e.layer._latlng["lng"];
+        var clickedCity = e.layer.options.id
+        console.log(clickedCity);
+        console.log(clickedLat);
+        console.log(clickedLon);
+        radChart.destroy();
+        radarChart(`${clickedCity}`)
+    })  
+  };
+
+  //Add event listener to each time city is selected
+  cityLayer.on("click", getData());
+  
 });
 
 
