@@ -5,6 +5,7 @@ body {
 
 #map{
   position: relative;
+  border: 1px solid lightgrey;
   height: inherit;
   max-width: inherit;
   border-radius: 10px;
@@ -40,6 +41,7 @@ html {
 
 #doChart {
   background-color:whitesmoke;
+  border: 1px solid lightgrey;
   padding: 10px;
   border-radius: 10px;
   width: 100%;
@@ -49,6 +51,7 @@ html {
 
 #barChart {
   background-color:whitesmoke;
+  border: 1px solid lightgrey;
   padding: 10px;
   border-radius: 10px;
   width: 100%;
@@ -58,8 +61,25 @@ html {
 
 #radarChart {
   padding: 10px;
-  border: 10px;
-  border-color:black;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#panel {
+  padding: 10px;
+  border: 1px solid lightgrey;
+  border-radius: 10px;
+  width: 100%;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+#gauge {
+  padding: 10px;
+  border: 1px solid lightgrey;
   border-radius: 10px;
   width: 100%;
   margin-top: 10px;

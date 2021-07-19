@@ -332,7 +332,7 @@ d3.csv(csv, function(response){
           },
           title: {
             display: true,
-            text: "City Air Quality Index",
+            text: "Cities Per AQI",
             font: {
               size: 28,
             }
@@ -353,6 +353,7 @@ d3.csv(csv, function(response){
   let radLabels = ["CO", "NO2", "O3", "S02", "PM2.5", "PM10"]
   let matchedCity = response.filter(row => row.City == 'Denver');
   let match = matchedCity[0];
+  //Set variables to plot
   let matchCO = Math.round(((match.CO/1000)/15.4)*100)
   //let matchNH3 = match.NH3
   //let matchNO = match.NO
@@ -419,12 +420,16 @@ d3.csv(csv, function(response){
       }
   });
 
-
+  //Function to build radar chart after new city is selected
   function radarChart(selectedCity) {
     const radar = document.getElementById('radarChart')
+    //Set labels for chart
     let radLabels = ["CO", "NO2", "O3", "S02", "PM2.5", "PM10"]
-    let matchedCity = response.filter(row => row.City == 'Denver');
+    //Filter response to selected city
+    let matchedCity = response.filter(row => row.City == selectedCity);
+    //Enter array of selected city
     let match = matchedCity[0];
+    //Set variables to plot
     let matchCO = Math.round(((match.CO/1000)/15.4)*100)
     //let matchNH3 = match.NH3
     //let matchNO = match.NO
@@ -442,12 +447,12 @@ d3.csv(csv, function(response){
           datasets: [{
             label: `${selectedCity}`,
             data: matchData,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgb(54, 162, 235)',
-            pointBackgroundColor: 'rgb(54, 162, 235)',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgb(255, 99, 132)',
+            pointBackgroundColor: 'rgb(255, 99, 132)',
             pointBorderColor: '#fff',
             pointHoverBackgroundColor: '#fff',
-            pointHoverBorderColor: 'rgb(54, 162, 235)'
+            pointHoverBorderColor: 'rgb(255, 99, 132)'
           }]
         },
         options: {
@@ -473,6 +478,17 @@ d3.csv(csv, function(response){
               font: {
                 size: 28,
               }
+            },
+            subtitle: {
+              display: true,
+              text: "100% = Threshold for Medium AQI",
+              font: {
+                size: 16,
+              },
+              padding: {
+                top:0,
+                bottom:30
+              }
             }
           },
           maintainAspectRatio : true,
@@ -481,14 +497,9 @@ d3.csv(csv, function(response){
     });
   }
 
-  //Function to removed data
-  function removeData(chart) {
-    chart.data.labels.pop()
-    chart.data.datasets.forEach((dataset) => {
-      dataset.data.pop();
-    });
-    chart.update();
-  }
+  //Add event listener to each time city is selected
+  cityLayer.on("click", getData());
+
   //Event handler to return city when circle marker is clicked
   function getData(){
     cityLayer.on("click", function(e) {
@@ -498,13 +509,13 @@ d3.csv(csv, function(response){
         console.log(clickedCity);
         console.log(clickedLat);
         console.log(clickedLon);
+        //Clear radChart so it can be rebuilt
         radChart.destroy();
         radarChart(`${clickedCity}`)
     })  
   };
 
-  //Add event listener to each time city is selected
-  cityLayer.on("click", getData());
+
   
 });
 
