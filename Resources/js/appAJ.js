@@ -207,7 +207,7 @@ d3.csv(csv, function(response){
   popData.push(fivePop)
 
   //Create labels for Chart.js charts
-  let labels = [ "1: Very Low", "2: Low", "3: Medium", "4: High", "5: Very High"]
+  let labels = [ "1: Good", "2: Fair", "3: Moderate", "4: Poor", "5: Very Poor"]
 
   //Create bar chart via Chart.js
   const bar = document.getElementById('barChart')
