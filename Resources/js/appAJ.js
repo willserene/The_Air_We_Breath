@@ -514,9 +514,6 @@ d3.csv(csv, function(response){
         radarChart(`${clickedCity}`)
     })  
   };
-
-
-  
 });
 
 
