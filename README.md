@@ -18,8 +18,8 @@ The team also added several visulations including a map with markers and a heatm
 * HTML
 * Javascript
 * Jupyter Notebook
-* Leaflet
-* Pandas.js
+* Leaflet.js
+* Pandas
 * Plotly.js
 * Python
 * SQLite
