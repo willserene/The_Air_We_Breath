@@ -135,11 +135,11 @@ function createGauge() {
     'marker':{
         'colors':[
             'rgb(255, 255, 255)',
-            'skyblue',
-            'cadeblue',
-            'steelblue',
-            'slategrey',
-            'burlywood'
+            'green',
+            'yellow',
+            'orange',
+            'red',
+            'maroon'
             
         ]
     },
