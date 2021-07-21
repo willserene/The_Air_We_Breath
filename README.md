@@ -1,5 +1,5 @@
-# project2-the-air-we-breathe
-Visualizing Air Quality in Colorado 
+# The Air We Breathe
+### Visualizing Air Quality in Colorado 
 
 # We Give A Hoot
 
