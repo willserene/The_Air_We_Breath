@@ -14,10 +14,10 @@ d3.csv(csv, function(response){
   //Function to define AQI Color Scale
   function getColor(d) {
     return d == 1 ? 'Green':
-      d == 2 ? 'YellowGreen':
-      d == 3 ? 'Yellow':
-      d == 4 ? 'Orange':
-      d == 5 ? 'Red':
+      d == 2 ? 'Yellow':
+      d == 3 ? 'Orange':
+      d == 4 ? 'Red':
+      d == 5 ? 'Maroon':
       "Gray"
   };  
 
@@ -219,18 +219,18 @@ d3.csv(csv, function(response){
         label: '',
         data: popData,
         backgroundColor: [
-          'Green',
-          'YellowGreen',
-          'Yellow', 
-          'Orange',
-          'Red'
+          'green',
+          'yellow',
+          'orange',
+          'red',
+          'maroon'
         ],
         borderColor: [
-          'Green',
-          'YellowGreen',
-          'Yellow', 
-          'Orange',
-          'Red'
+          'green',
+          'yellow',
+          'orange',
+          'red',
+          'maroon'
         ],
         borderWidth: 1
       }]
@@ -315,11 +315,11 @@ d3.csv(csv, function(response){
           label: 'Air Quality',
           data: doData,
           backgroundColor: [
-            'Green',
-            'YellowGreen',
-            'Yellow', 
-            'Orange',
-            'Red'
+            'green',
+            'yellow',
+            'orange',
+            'red',
+            'maroon'
           ],
           hoverOffset: 4
         }]
