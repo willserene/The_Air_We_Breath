@@ -14,10 +14,10 @@ d3.csv(csv, function(response){
   //Function to define AQI Color Scale
   function getColor(d) {
     return d == 1 ? 'Green':
-      d == 2 ? 'YellowGreen':
-      d == 3 ? 'Yellow':
-      d == 4 ? 'Orange':
-      d == 5 ? 'Red':
+      d == 2 ? 'Yellow':
+      d == 3 ? 'Orange':
+      d == 4 ? 'Red':
+      d == 5 ? 'Maroon':
       "Gray"
   };  
 
@@ -219,18 +219,18 @@ d3.csv(csv, function(response){
         label: '',
         data: popData,
         backgroundColor: [
-          'Green',
-          'YellowGreen',
-          'Yellow', 
-          'Orange',
-          'Red'
+          'green',
+          'yellow',
+          'orange',
+          'red',
+          'maroon'
         ],
         borderColor: [
-          'Green',
-          'YellowGreen',
-          'Yellow', 
-          'Orange',
-          'Red'
+          'green',
+          'yellow',
+          'orange',
+          'red',
+          'maroon'
         ],
         borderWidth: 1
       }]
@@ -315,11 +315,11 @@ d3.csv(csv, function(response){
           label: 'Air Quality',
           data: doData,
           backgroundColor: [
-            'Green',
-            'YellowGreen',
-            'Yellow', 
-            'Orange',
-            'Red'
+            'green',
+            'yellow',
+            'orange',
+            'red',
+            'maroon'
           ],
           hoverOffset: 4
         }]
@@ -354,14 +354,14 @@ d3.csv(csv, function(response){
   let matchedCity = response.filter(row => row.City == 'Denver');
   let match = matchedCity[0];
   //Set variables to plot
-  let matchCO = Math.round(((match.CO/1000)/15.4)*100)
+  let matchCO = Math.round((((match.CO/1.145)/1000)/9.5)*100)
   //let matchNH3 = match.NH3
   //let matchNO = match.NO
-  let matchNO2 = Math.round((match.NO2/649)*100)
-  let matchO3 = Math.round((match.O3/204)*100)
-  let matchSO2 = Math.round((match.SO2/304)*100)
-  let matchPM25 = Math.round((match.PM25/150.4)*100)
-  let matchPM10 = Math.round((match.PM10/354)*100)
+  let matchNO2 = Math.round(((match.NO2/1.88)/101)*100)
+  let matchO3 = Math.round(((match.O3/2)/125)*100)
+  let matchSO2 = Math.round(((match.SO2/2.62)/76)*100)
+  let matchPM25 = Math.round((match.PM25/35.5)*100)
+  let matchPM10 = Math.round((match.PM10/155)*100)
   let matchData = []
   matchData.push(matchCO, matchNO2, matchO3, matchSO2, matchPM25, matchPM10)
   radChart = new Chart(radar, {
@@ -430,14 +430,14 @@ d3.csv(csv, function(response){
     //Enter array of selected city
     let match = matchedCity[0];
     //Set variables to plot
-    let matchCO = Math.round(((match.CO/1000)/15.4)*100)
+    let matchCO = Math.round((((match.CO/1.145)/1000)/9.5)*100)
     //let matchNH3 = match.NH3
     //let matchNO = match.NO
-    let matchNO2 = Math.round((match.NO2/649)*100)
-    let matchO3 = Math.round((match.O3/204)*100)
-    let matchSO2 = Math.round((match.SO2/304)*100)
-    let matchPM25 = Math.round((match.PM25/150.4)*100)
-    let matchPM10 = Math.round((match.PM10/354)*100)
+    let matchNO2 = Math.round(((match.NO2/1.88)/101)*100)
+    let matchO3 = Math.round(((match.O3/2)/125)*100)
+    let matchSO2 = Math.round(((match.SO2/2.62)/76)*100)
+    let matchPM25 = Math.round((match.PM25/35.5)*100)
+    let matchPM10 = Math.round((match.PM10/155)*100)
     let matchData = []
     matchData.push(matchCO, matchNO2, matchO3, matchSO2, matchPM25, matchPM10)
     radChart = new Chart(radar, {
