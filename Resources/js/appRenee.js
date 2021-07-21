@@ -157,8 +157,8 @@ function createGauge() {
 
  var layout = {
     title: '<b>Air Quality Index</b> <br>',
-    height: 600,
-    width: 600,
+    height: 500,
+    width: 500,
     shapes:[{
         type: 'path',
         path: path,
