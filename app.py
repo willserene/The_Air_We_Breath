@@ -1,66 +1,76 @@
+#Flask app for air CO quality data
+
 import numpy as np
 import pandas as pd
-import datetime as dt
 
-# import sqlalchemy
+import sqlalchemy
 from sqlalchemy.ext.automap import automap_base
 from sqlalchemy.orm import Session
-from sqlalchemy import create_engine, func, inspect
+from sqlalchemy import create_engine, func, inspect, MetaData, Table
 
-# from sqlalchemy import Metadata, Table
+from flask import Flask, jsonify
+from  flask import (Flask, render_template, jsonify, request, redirect)
 
-from flask import Flask, jsonify, render_template
-# from flask_cors import CORS
+import sqlite3
+
 
 
 #################################################
 # Database Setup
 #################################################
 
-engine = create_engine("sqlite:///Resources/air.sqlite")
-# conn = engine.connect()
-# reflect database into a new model
-base = automap_base()
 
-# reflect the tables
-base.prepare(engine, reflect=True)
+conn = sqlite3.connect('./Resources/air.sqlite')
 
-
-
-# Save reference to the tables
-airquality = base.classes.airquality
-
-# inspector=inspect(engine)
-# inspector.get_table_names()
-
-# airquality = inspect.__name__
-
-# # Create a MetaData instance
-# metadata = MetaData(engine).reflect()
-# # print(metadata.tables)
-
-# # reflect db schema to MetaData
-# # metadata.reflect(bind=engine)
-# airquality = metadata.tables.airquality
-# print(airquality)
-
-#################################################
-# Flask Setup
-#################################################
+airquality_table = pd.read_sql_query("SELECT * FROM airquality", conn)
+airquality_table.head(5)
+print(airquality_table)
 
 app = Flask(__name__)
-# CORS(app)
+
 
 #################################################
 # Flask Routes
 #################################################
 
-
 # @app.route("/")
 # def outside():
 # 	return render_template('index.html', title="page")
+#  home page - welcome
+
+# @app.route("/")
+# def index():
+#     return render_template("index.html")
+    
+
+# @app.route("/home")
+# def home():
+#     return render_template("index.html")
+   
 
 
+# @app.route("/pvp.html")
+# def roster():
+#     return render_template("pvp.html")
+
+# # team vs team
+# @app.route("/tvt.html")
+# def teamroster():
+#     return render_template("tvt.html")
+#     # ____ vs _____
+
+# # separate about page
+# @app.route("/about.html")
+# def about():
+#     return render_template("about.html")
+
+# # separate database access page
+# @app.route("/stats")
+# def stats():
+#     return render_template("stats.html")
+
+if __name__ == "__main__":
+    app.run(debug = True)
 
 
 
@@ -70,18 +80,18 @@ app = Flask(__name__)
 #################################################
 
 
-@app.route("/")
-def home():
+# @app.route("/")
+# def home():
 
-        session = Session(engine)
+#         session = Session(engine)
 
-        results = session.query(airquality)
+#         results = session.query(airquality)
 
-        allcities = list(np.ravel(results))
+#         allcities = list(np.ravel(results))
         
-        session.close()
+#         session.close()
 
-        return jsonify(allcities)
+#         return jsonify(allcities)
         
         
         
@@ -111,8 +121,7 @@ def home():
 
         # return jsonify(airdata_list)
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
 
     # url = 'http://127.0.0.1:5000'
 
