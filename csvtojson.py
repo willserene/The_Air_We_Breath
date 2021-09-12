@@ -1,16 +1,6 @@
 import json
 import csv
 
-# with open ("./Resources/data/air_api_data.csv", "r") as f:
-#     reader = csv.reader(f)
-#     next(reader)
-#     data = {"metadata": []}
-#     for row in reader:
-#         data["metadata"].append({"aqi": row[5]})
-
-# with open ("airsamplescopy.json", "w") as f:
-#     json.dump(data, f)
-
         
 # Function to convert a CSV to JSON
 # Takes the file paths as arguments
@@ -25,12 +15,12 @@ def make_json(csvFilePath, jsonFilePath):
         next(csvReader)
         # Convert each row into a dictionary
         # and add it to data
-        for rows in csvReader:
+        for row in csvReader:
              
             # Assuming a column named '' to
             # be the primary key
-            key = rows['']
-            data[key] = rows
+            key = row['City']
+            data[key] = row
  
     # Open a json writer, and use the json.dumps()
     # function to dump data
