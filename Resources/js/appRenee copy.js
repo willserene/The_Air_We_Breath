@@ -15,7 +15,7 @@ function optionChanged() {
 function buildPlot(){
 
 
-  d3.json("./Resources/data/airsampletest.json", function(incomingdata) {
+  d3.json("./Resources/data/airsamplesnew.json", function(incomingdata) {
       //get a list of all the id names
       var idValues = incomingdata.names;
 
