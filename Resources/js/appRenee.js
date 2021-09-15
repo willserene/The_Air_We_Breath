@@ -15,7 +15,7 @@ function optionChanged() {
 function buildPlot(){
 
 
-  d3.json("./Resources/data/airsamples.json", function(incomingdata) {
+  d3.json("./Resources/data/airsamplesnew.json", function(incomingdata) {
       //get a list of all the id names
       console.log(incomingdata)
       var idValues = incomingdata.names;
@@ -90,7 +90,7 @@ function buildPlot(){
 init();
 
 function gauge(){
-  d3.json("./Resources/data/airsamples.json", function (data) {
+  d3.json("./Resources/data/airsamplesnew.json", function (data) {
       var currentID = d3.selectAll("#selDataset").node().value;
       filteredMeta = data.metadata.filter(entry => entry.id == currentID);
       x = filteredMeta[0].aqi
