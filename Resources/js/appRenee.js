@@ -17,6 +17,7 @@ function buildPlot(){
 
   d3.json("./Resources/data/airsamples.json", function(incomingdata) {
       //get a list of all the id names
+      console.log(incomingdata)
       var idValues = incomingdata.names;
 
       // Create the drop down menu by inserting every id name in below function.
