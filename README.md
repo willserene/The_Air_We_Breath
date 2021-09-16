@@ -27,7 +27,7 @@ The team also added several visulations including a map with markers and a heatm
 ## Deployment
 View the deployed web page here!
 
-https://willserene.github.io/project2-the-air-we-breath/
+https://willserene.github.io/The_Air_We_Breath
 
 ## Sources
 * https://openweathermap.org/api/air-pollution
