@@ -33,3 +33,11 @@ https://willserene.github.io/The_Air_We_Breath
 * https://openweathermap.org/api/air-pollution
 * https://en.wikipedia.org/wiki/List_of_municipalities_in_Colorado
 
+## Images from Deployed Web Page
+
+### Image 1
+![Image 1](https://github.com/willserene/The_Air_We_Breath/blob/main/Screenshots/Image%201.png)
+
+### Image 2
+![Image 2](https://github.com/willserene/The_Air_We_Breath/blob/main/Screenshots/Image%202.png)
+
